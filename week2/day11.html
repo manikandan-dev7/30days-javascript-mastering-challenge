@@ -1,0 +1,95 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="inp" />
+    <div id="result"></div>
+    <button id="btn">OK</button>
+
+    <script>
+      let inp = document.getElementById("inp");
+      let btn = document.getElementById("btn");
+      let result = document.getElementById("result");
+      btn.addEventListener("click", () => {
+        result.innerHTML = "";
+        let val = inp.value;
+        let p = document.createElement("p");
+        if (val === "" || val === " ") {
+          p.textContent = "name is required";
+          result.append(p);
+          return;
+        } else if (val.length < 3) {
+          p.textContent = "name is too short";
+          result.append(p);
+          return;
+        } else {
+          p.textContent = val;
+          result.append(p);
+          inp.value = "";
+        }
+      });
+    </script>
+  </body>
+</html> -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="nameInp" placeholder="Name" />
+    <input id="ageInp" placeholder="Age" />
+    <button id="btn">Submit</button>
+    <p id="err" style="color: red"></p>
+    <p id="success" style="color: green"></p>
+    <script>
+      // Validations in order:
+      let nameInp = document.getElementById("nameInp");
+      let ageInp = document.getElementById("ageInp");
+      let btn = document.getElementById("btn");
+      let err = document.getElementById("err");
+      let success = document.getElementById("success");
+      // 1. name empty → "Name is required"
+      btn.addEventListener("click", () => {
+        err.innerHTML = "";
+        success.innerHTML = "";
+        // 2. name.length < 3 → "Name too short"
+        if (!/^[a-zA-Z\s]+$/.test(nameInp.value.trim())) {
+          err.textContent = "Name must contain letters only";
+          return;
+        } else if (nameInp.value.length < 3) {
+          err.textContent = "name too short";
+           return;
+        }
+        // 3. age empty → "Age is required"
+        else if (ageInp.value < 0 && ageInp.value.trim() === "") {
+          err.textContent = "age is required";
+           return;
+        }
+        // 4. age is not a number → "Age must be a number"  ← new! use isNaN()
+        else if (isNaN(ageInp.value)) {
+          err.textContent = "Age must be a number";
+           return;
+        }
+        // 5. age < 18 → "Must be 18 or older"
+        else if (ageInp.value < 18) {
+          err.textContent = "must be 18 or older";
+           return;
+        }
+        // 6. all clear → show "Welcome, [name]! Age: [age]" in success paragraph
+        else {
+          success.textContent = `welcome ${nameInp.value} age: ${ageInp.value}`;
+          nameInp.value = "";
+          ageInp.value = "";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "workbench.colorCustomizations": {
+    "editor.background": "#0D2A3D",
+    "editor.foreground": "#E0F7FF",
+    "editorWhitespace.foreground": "#00D9FF33",
+    "editorLineNumber.foreground": "#00D9FF",
+    "editorCursor.foreground": "#00D9FF",
+    "editor.selectionBackground": "#00D9FF44"
+  }
+}

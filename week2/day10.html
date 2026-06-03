@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="nameInput" type="text" />
+    <button id="addBtn">ADD</button>
+
+    <input id="letterInput" type="text" placeholder="Filter letter..." />
+    <button id="filterBtn">FILTER</button>
+
+    <ul id="list"></ul>
+    <div id="resultDiv"></div>
+
+    <script>
+      // 1. grab all elements
+      let nameInput = document.getElementById("nameInput");
+      let addBtn = document.getElementById("addBtn");
+      let letterInput = document.getElementById("letterInput");
+      let filterBtn = document.getElementById("filterBtn");
+      let list = document.getElementById("list");
+      let resultDiv = document.getElementById("resultDiv");
+
+      // 2. empty names array
+      let names = [];
+      // 3. add button — push to array, show in list, clear input
+      addBtn.addEventListener("click", () => {
+        names.push(nameInput.value);
+        let li = document.createElement("li");
+        li.textContent = nameInput.value;
+        list.append(li);
+        nameInput.value = "";
+        console.log(li);
+        console.log(names);
+      });
+      // 4. filter button — filter by letter, map to uppercase, call display
+      filterBtn.addEventListener("click", () => {
+        let letter = letterInput.value;
+        let result = names
+          .filter((item) => {
+            return item.startsWith(letter);
+          })
+          .map((item) => {
+            return item.toUpperCase();
+          });
+        console.log(result);
+        display(result);
+      });
+      // 5. display function — clear resultDiv, loop, createElement, append
+      function display(arr) {
+        resultDiv.innerHTML = "";
+        arr.forEach((el) => {
+          let p = document.createElement("p");
+          p.textContent = el;
+          resultDiv.append(p);
+          console.log(p);
+        });
+      }
+    </script>
+  </body>
+</html>

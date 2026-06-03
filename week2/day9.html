@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Products</h2>
+  <button id="btn">Show Cheap</button>
+  <div id="box"></div>
+
+  <script>
+    let box = document.getElementById("box");
+    let btn = document.getElementById("btn");
+    let showAll = true;
+
+    let products = [
+      { name: "Phone", price: 10000 },
+      { name: "Shirt", price: 500 },
+      { name: "Laptop", price: 55000 },
+      { name: "Book", price: 300 },
+      { name: "Watch", price: 12000 },
+      { name: "Pen", price: 50 }
+    ];
+
+    let mapped = (arr)  => {
+      box.innerHTML="";
+      arr.map((item) => {
+        let p = document.createElement("p");
+        p.textContent = `${item.name}-${item.price}`
+        box.append(p)
+      })
+    }
+    btn.addEventListener("click",() => {
+      showAll = !showAll
+      if(showAll){
+        btn.textContent = "show Cheap";
+        mapped(products)
+      }
+      else{
+         // Show cheap products (price < 1000) on button click
+        let cheap = products.filter((item) => {
+          return item.price <= 1000
+        })
+        btn.textContent="show All"
+        mapped(cheap)
+      }
+    })
+    mapped(products)
+
+    // Click again → show all
+  </script>
+</body>
+</html>
