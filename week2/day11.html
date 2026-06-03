@@ -35,7 +35,7 @@
     </script>
   </body>
 </html> -->
-
+<!-- 
 <!doctype html>
 <html lang="en">
   <head>
@@ -88,6 +88,54 @@
           success.textContent = `welcome ${nameInp.value} age: ${ageInp.value}`;
           nameInp.value = "";
           ageInp.value = "";
+        }
+      });
+    </script>
+  </body>
+</html> -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="nameInp" placeholder="Type your name..." />
+    <p id="err" style="color: red"></p>
+    <p id="success" style="color: green"></p>
+
+    <script>
+      // 1. grab nameInp, err paragraph
+      let nameInp = document.getElementById("nameInp");
+      let err = document.getElementById("err");
+      let success = document.getElementById("success");
+      // 2. attach "input" event to nameInp
+      nameInp.addEventListener("input", () => {
+        //    - read nameInp.value into val
+        let val = nameInp.value;
+        err.innerHTML="";
+        success.innerHTML=""
+        //    - if val.trim() is empty → show "Name is required" → return
+        if (val.trim() == "") {
+          err.textContent = "name is required";
+          return;
+        }
+        //    - if val.length < 3 → show "Min 3 characters" → return
+        else if (val.length < 3) {
+          err.textContent = "min 3 characters";
+          return;
+        }
+        //    - if not letters only → show "Letters only" → return
+        else if (!/^[a-zA-Z\s]+$/.test(val)) {
+          err.textContent = "letter only"
+          return;
+        }
+        //    - all clear → err.textContent = "" and show "✓ Looks good!" in green
+        else {
+          err.textContent = "";
+          success.textContent = "looks good!";
         }
       });
     </script>
