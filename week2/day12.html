@@ -139,96 +139,111 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>queue</title>
   </head>
   <body>
-    <h2>Queue Manager</h2>
-    <input id="inputNam" type="text" placeholder="Enter your Name" />
+    <input
+      id="inputName"
+      type="text"
+      placeholder="Enter Name"
+      style="width: 30%; height: 50px"
+    />
     <br /><br />
-    <button onclick="addToEnd()">Add to End</button>
-    <button onclick="removeLast()">Remove last</button>
-    <button onclick="addToFront()">Add to Front</button>
-    <button onclick="removeFirst()">Remove First</button>
-    <button onclick="checkName()">Check Name</button>
-    <button onclick="findPosition()">Find Position</button>
+    <button onclick="addToEnd()">Add to end</button>
+    <button onclick="removeEnd()">Remove End</button>
+    <button onclick="addToTop()">Add to top</button>
+    <button onclick="removeTop()">Remove Top</button>
+    <button onclick="checker()">Checker</button>
+    <button onclick="findPosition()">Find</button>
 
     <p id="status"></p>
-    <ul id="listednames"></ul>
+    <ul id="list"></ul>
 
     <script>
-      let names = ["Ravi", "Priya", "Arjun"];
-      let inputNam = document.getElementById("inputNam");
+      let inputName = document.getElementById("inputName");
       let status = document.getElementById("status");
-      let listedNames = document.getElementById("listednames");
+      let list = document.getElementById("list");
+
+      let studentList = ["shiva", "arjun", "ravi"];
 
       function display() {
-        inputNam.value = "";
-        listedNames.innerHTML = "";
-        names.forEach((arr) => {
+        list.innerHTML = "";
+        studentList.forEach((el) => {
           let li = document.createElement("li");
-          li.textContent = arr;
-          listedNames.append(li);
+          li.textContent = el;
+          list.append(li);
         });
       }
+
       function addToEnd() {
-        let val = inputNam.value.trim();
+        let val = inputName.value.trim();
         if (val === "") {
-          status.textContent = "Enter a name";
+          status.textContent = "it must be name";
+          return;
         } else if (!isNaN(val)) {
-          status.textContent = "Name must be a letter";
-        } else if (names.includes(val)) {
-          status.textContent = "already added";
+          status.textContent = "it must be a letter";
+          return;
+        } else if (val.length <= 3) {
+          status.textContent = "name is too short";
+          return;
         } else {
-          names.push(val);
-          status.textContent = "Added Last";
-          display();
+          status.textContent = "added";
+          studentList.push(val);
         }
+        display();
       }
-      function removeLast() {
-        status.textContent = "Removed Last";
-        names.pop()
+      function removeEnd() {
+        status.textContent = "Removed last";
+        studentList.pop();
+        display();
+      }
+      function addToTop() {
+        let val = inputName.value.trim();
+        if (val === "") {
+          status.textContent = " it must be a name";
+          return;
+        } else if (!isNaN(val)) {
+          status.textContent = "it must be a letter";
+          return;
+        } else if (val.length <= 3) {
+          status.textContent = "its too short";
+          return;
+        } else {
+          status.textContent = "added";
+          studentList.unshift(val);
+        }
+        display();
+      }
+      function removeTop(){
+        status.textContent= "removed";
+        studentList.shift()
         display()
       }
-      function addToFront(){
-        let val  = inputNam.value.trim();
-        if(val === ""){
-            status.textContent = "Enter a name";
-        }else if(!isNaN(val)){
-            status.textContent = "name must be a letter";
-        }else if(names.includes(val)){
-            status.textContent = "Already added";
-        }
-        else{
-            names.unshift(val);
-            status.textContent = "Added Top";
-            display()
-        }
+      function checker(){
+       let val = inputName.value.trim();
+       if(studentList.includes(val)){
+        status.textContent = `${val} is available in the queue`;
+        return;
+       } 
+       else{
+        status.textContent = "not found"
+       }
+       display()
       }
-      function removeFirst(){
-        names.shift()
-        status.textContent = "removed First";
-        display()
-      }
-      function checkName(){
-        let val = inputNam.value.trim();
-        if(names.includes(val)){
-            status.textContent = `Yes, ${val} is in the list`;
-        }
-        else{
-            status.textContent =`${val} is not Found u can add`
-        }
-      }
+
       function findPosition(){
-        let val = inputNam.value.trim();
-        let result = names.indexOf(val)
-        console.log(result);
+        let val = inputName.value.trim()
+        let result = studentList.indexOf(val);
         if(result === -1){
-            status.textContent = "Not found"
+          status.textContent = `${val} not found you can add`;
+          return;
         }
         else{
-             status.textContent = `${val} is at position ${result + 1}`
+          status.textContent = `${val} is at the postion ${result +1}`
         }
+        display()
       }
+
       display();
     </script>
   </body>
