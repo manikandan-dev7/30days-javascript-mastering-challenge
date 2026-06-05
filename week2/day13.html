@@ -1,0 +1,134 @@
+<!-- <!doctype html>
+<html>
+  <head>
+    <title>Student Manager</title>
+  </head>
+  <body>
+    <h2>Student Batch Manager</h2>
+    <input
+      type="text"
+      id="nameInput"
+      placeholder="Enter names (comma separated)"
+      style="width: 30%; height: 40px"
+    />
+    <br /><br />
+    <button onclick="addMultiple()">Add Multiple</button>
+    <button onclick="mergeBatch()">Merge Batch 2</button>
+    <button onclick="resetList()">Reset</button>
+    <p id="status"></p>
+    <ul id="studentList"></ul>
+    <script>
+      let nameInput = document.getElementById("nameInput");
+      let status = document.getElementById("status");
+      let studentList = document.getElementById("studentList");
+      let batch1 = ["Ravi", "Priya", "Arjun"];
+      let batch2 = ["Arjun", "Deepa", "Ravi", "Karthik"];
+      let students = [...batch1]; 
+
+      function display() {
+        // clear studentList innerHTML
+        studentList.innerHTML = "";
+        // loop through students
+        students.map((item) => {
+          // createElement "li"
+          let li = document.createElement("li");
+          // set textContent
+          li.textContent = item;
+          // appendChild
+          studentList.append(li);
+        });
+      }
+
+      function addMultiple() {
+        // get input value, trim it
+        let val = nameInput.value.trim();
+        // split by comma → gives array of names
+        // trim each name using map
+        let names = val.split(",").map((item) => item.trim());
+        // spread new names into students
+        // remove duplicates using Set
+        students = [... new Set([...students, ...names])];
+        console.log(students);
+        // display()
+        display();
+      }
+
+      function mergeBatch() {
+        // merge students and batch2 using spread
+        students = [...new Set([...students, ...batch2])]
+        // remove duplicates using Set
+        // display()
+        display()
+      }
+
+      function resetList() {
+        // reset students back to [...batch1]
+        students = [...batch1]
+        // display()
+        display()
+      }
+
+      display();
+    </script>
+  </body>
+</html> -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class list</title>
+  </head>
+  <body>
+    <h2>Student Batch Manager</h2>
+    <input
+      id="nameInput"
+      type="text"
+      placeholder="enter name by using comma"
+      style="width: 30%; height: 40px"
+    />
+    <br />
+    <br />
+
+    <button onclick="addNames()">Add Names</button>
+    <button onclick="mergeNames()">Merge with Batch2</button>
+    <button onclick="reset()">Reset</button>
+    <p id="status"></p>
+    <ul id="studentList"></ul>
+
+    <script>
+      let nameInput = document.getElementById("nameInput");
+      let status = document.getElementById("status");
+      let studentList = document.getElementById("studentList");
+      let classA = ["Mani", "Ravi", "Priya"];
+      let classB = ["Ravi", "Karthik", "Mani", "Deepa"];
+      let students = [...classA];
+      function display() {
+        studentList.innerHTML = "";
+        students.map((item) => {
+          let li = document.createElement("li");
+          li.textContent = item;
+          studentList.append(li);
+        });
+      }
+      function addNames() {
+        let val = nameInput.value.trim();
+        let names = val.split(",").map((item) => item.trim());
+        students = [...new Set([...names, ...students])];
+        console.log(students);
+        display();
+      }
+      function mergeNames() {
+        students = [...new Set([...classB,...students])];
+        console.log(students);
+        display();
+      }
+      function reset() {
+        students = [...classA];
+        display();
+      }
+      display();
+    </script>
+  </body>
+</html>
