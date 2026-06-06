@@ -1,0 +1,319 @@
+<!-- UI:
+- One button "Generate Scores"
+- Click → shows 5 random scores (1–100)
+- Shows Total, Average, Highest below
+
+Logic:
+- Random scores → Math.floor + Math.random + loop
+- Total → reduce
+- Average → total / 5  
+- Highest → reduce -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="generate()">Generate</button>
+    <ul id="displayList"></ul>
+    <div id="result"></div>
+    <p id="status"></p>
+
+    <script>
+      let displayList = document.getElementById("displayList");
+      let result = document.getElementById("result");
+      let status = document.getElementById("status");
+
+      function generate() {
+        let marks = [];
+        displayList.innerHTML = "";
+        result.innerHTML = "";
+        for (let i = 0; i < 5; i++) {
+          marks.push(Math.floor(Math.random() * 71) + 30);
+        }
+        marks.forEach((item) => {
+          let li = document.createElement("li");
+          li.textContent = item;
+          displayList.append(li);
+        });
+        let total = marks.reduce((acc, curr) => {
+          return acc + curr;
+        }, 0);
+        let p1 = document.createElement("p");
+        p1.textContent = `Total: ${total}`;
+        result.append(p1);
+        let average = total / marks.length;
+        let p2 = document.createElement("p");
+        p2.textContent = `Average: ${average}`;
+        result.append(p2);
+        let highest = marks.reduce((acc, curr) => {
+          return acc > curr ? acc : curr;
+        }, 0);
+        let p3 = document.createElement("p");
+        p3.textContent = `Highest: ${highest}`;
+        result.append(p3);
+        console.log(marks);
+        let failure = [];
+        marks.forEach((el) => {
+          if (el <= 40) {
+            failure.push(`no ${marks.indexOf(el) + 1} got fail`);
+          }
+        });
+        status.textContent = failure.length > 0 ? failure : "all passed!"
+      }
+    </script>
+  </body>
+</html>
+
+<!-- 
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Score Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Nunito', sans-serif;
+        background: #f0f4ff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 36px 32px;
+        max-width: 420px;
+        width: 100%;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+      }
+
+      h1 {
+        font-size: 22px;
+        font-weight: 800;
+        color: #1e1e2e;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 28px;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        background: #4f6ef7;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+        margin-bottom: 28px;
+        letter-spacing: 0.3px;
+      }
+
+      button:hover { background: #3a57d4; }
+      button:active { transform: scale(0.98); }
+
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+
+      ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 24px;
+        min-height: 0;
+      }
+
+      ul li {
+        background: #eef1ff;
+        color: #4f6ef7;
+        font-weight: 700;
+        font-size: 15px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        animation: popin 0.25s ease;
+      }
+
+      ul li.fail {
+        background: #fff0f0;
+        color: #e05555;
+      }
+
+      @keyframes popin {
+        from { opacity: 0; transform: scale(0.85); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+
+      .stats {
+        background: #f8f9ff;
+        border-radius: 14px;
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: #555;
+        font-weight: 600;
+      }
+
+      .stat-row span:last-child {
+        font-weight: 800;
+        font-size: 16px;
+        color: #1e1e2e;
+      }
+
+      .stat-row.highlight span:last-child {
+        color: #4f6ef7;
+      }
+
+      .divider {
+        height: 1px;
+        background: #eee;
+      }
+
+      #status {
+        font-size: 13px;
+        font-weight: 700;
+        padding: 10px 14px;
+        border-radius: 10px;
+        display: none;
+      }
+
+      #status.pass {
+        background: #edfbf0;
+        color: #2da84a;
+        display: block;
+      }
+
+      #status.fail {
+        background: #fff0f0;
+        color: #e05555;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>📊 Score Generator</h1>
+      <p class="subtitle">Generates 5 random scores between 30–100</p>
+
+      <button onclick="generate()">🎲 Generate Scores</button>
+
+      <div id="scoresSection" style="display:none">
+        <p class="section-label">Scores</p>
+        <ul id="displayList"></ul>
+
+        <p class="section-label">Stats</p>
+        <div class="stats" id="result"></div>
+
+        <p id="status"></p>
+      </div>
+    </div>
+
+    <script>
+      let displayList = document.getElementById("displayList");
+      let result = document.getElementById("result");
+      let status = document.getElementById("status");
+      let scoresSection = document.getElementById("scoresSection");
+
+      function generate() {
+        let marks = [];
+        displayList.innerHTML = "";
+        result.innerHTML = "";
+
+        for (let i = 0; i < 5; i++) {
+          marks.push(Math.floor(Math.random() * 71) + 30);
+        }
+
+        // Display scores
+        marks.forEach((item) => {
+          let li = document.createElement("li");
+          li.textContent = item;
+          if (item <= 40) li.classList.add("fail");
+          displayList.append(li);
+        });
+
+        // Total
+        let total = marks.reduce((acc, curr) => acc + curr, 0);
+
+        // Average
+        let average = (total / marks.length).toFixed(1);
+
+        // Highest
+        let highest = marks.reduce((acc, curr) => acc > curr ? acc : curr, 0);
+
+        // Stats rows
+        result.innerHTML = `
+          <div class="stat-row">
+            <span>Total</span>
+            <span>${total}</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-row">
+            <span>Average</span>
+            <span>${average}</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-row highlight">
+            <span>Highest</span>
+            <span>${highest}</span>
+          </div>
+        `;
+
+        // Failure status
+        let failures = [];
+        marks.forEach((el) => {
+          if (el <= 40) {
+            failures.push(`No.${marks.indexOf(el) + 1}`);
+          }
+        });
+
+        if (failures.length > 0) {
+          status.textContent = `⚠️ ${failures.join(", ")} got fail`;
+          status.className = "fail";
+        } else {
+          status.textContent = "✅ All passed!";
+          status.className = "pass";
+        }
+
+        scoresSection.style.display = "block";
+        console.log(marks);
+      }
+    </script>
+  </body>
+</html> -->
