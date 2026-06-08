@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>My Expense Tracker</h1>
+
+      <div class="input-section">
+        <input type="text" id="nameInput" placeholder="Expense name..." />
+        <input type="number" id="amountInput" placeholder="Amount (₹)" />
+        <input
+          type="text"
+          id="categoryInput"
+          placeholder="Category (e.g. Food, Travel)"
+        />
+        <button onclick="addExpense()">Add</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <p>Total</p>
+          <h2 id="totalDisplay">₹0</h2>
+        </div>
+        <div class="stat-card">
+          <p>Average</p>
+          <h2 id="avgDisplay">₹0</h2>
+        </div>
+        <div class="stat-card">
+          <p>Highest</p>
+          <h2 id="highDisplay">0</h2>
+        </div>
+        <div class="stat-card">
+          <p>Items</p>
+          <h2 id="countDisplay">0</h2>
+        </div>
+      </div>
+
+      <div class="filters" id = "filters"> 
+        <button onclick="showAll()">All</button>
+        <button onclick="showAboveAverage()">Above Average</button>
+        <button onclick="showUnique()">Unique Names</button>
+        
+      </div>
+
+      <ul id="expenseList"></ul>
+
+      <button class="tip-btn" onclick="randomTip()">🎲 Random Money Tip</button>
+      <p id="tipDisplay"></p>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
