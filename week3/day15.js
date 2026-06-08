@@ -27,4 +27,4 @@ const showUnique = ()=> {
 
 console.log(calTotal());
 console.log(calcAverage());
-console.log(showUnique());
+console.log(showUnique());c
