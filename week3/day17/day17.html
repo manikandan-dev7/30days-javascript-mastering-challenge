@@ -1,0 +1,335 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="filterBtn" onclick="showElectronics()">Show Electronics</button>
+    <ul id="productList"></ul>
+    <p id="totalDisplay"></p>
+    <script>
+      // DOM + filter + map + reduce
+      let productList = document.getElementById("productList");
+      let totalDisplay = document.getElementById("totalDisplay");
+      const products = [
+        { name: "Shoes", price: 1200, category: "fashion" },
+        { name: "Phone", price: 15000, category: "electronics" },
+        { name: "Shirt", price: 800, category: "fashion" },
+        { name: "Laptop", price: 55000, category: "electronics" },
+        { name: "Watch", price: 3500, category: "fashion" },
+      ];
+      function showElectronics() {
+        productList.innerHTML = "";
+        let electronics = products
+          .filter((el) => {
+            if (el.category === "electronics") {
+              return el;
+            }
+          })
+          electronics.forEach((el) => {
+            let li = document.createElement("li");
+            li.textContent = `${el.name}-${el.price}`;
+            productList.append(li);
+          });
+          let total = electronics.reduce((acc, curr) => {
+            return acc + curr.price
+          },0)
+          totalDisplay.textContent = `Total: ${total}`
+         console.log(electronics);
+         
+      }
+    </script>
+  </bod
+</html> -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        background: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 16px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      #container {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 480px;
+        overflow: hidden;
+      }
+
+      /* ── Header ── */
+      #header {
+        background: #1a1a2e;
+        padding: 28px 28px 20px;
+        color: #fff;
+      }
+
+      #header h1 {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+      }
+
+      #header p {
+        font-size: 13px;
+        color: #8888aa;
+        margin-top: 4px;
+      }
+
+      /* ── Input area ── */
+      #inputarea {
+        padding: 24px 28px;
+        border-bottom: 1px solid #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .field label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .field input {
+        width: 100%;
+        height: 42px;
+        padding: 0 14px;
+        border: 1.5px solid #e4e6ea;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #1a1a2e;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .field input:focus {
+        border-color: #6c63ff;
+      }
+
+      button {
+        width: 100%;
+        height: 44px;
+        background: #6c63ff;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 4px;
+        transition: background 0.2s;
+      }
+
+      button:hover {
+        background: #574fd6;
+      }
+
+      /* ── Output area ── */
+      #outputarea {
+        padding: 24px 28px;
+      }
+
+      #list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 0;
+        margin-bottom: 20px;
+      }
+
+      #list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: #f8f9fc;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1a1a2e;
+      }
+
+      #list li:first-child {
+        background: #fff8e7;
+        border: 1.5px solid #f59e0b;
+      }
+
+      #list li .rank {
+        font-size: 12px;
+        font-weight: 700;
+        color: #aaa;
+        width: 20px;
+      }
+
+      #list li:first-child .rank {
+        color: #f59e0b;
+      }
+
+      #list li .player-name {
+        flex: 1;
+        padding-left: 10px;
+      }
+
+      #list li .player-score {
+        font-weight: 700;
+        color: #6c63ff;
+      }
+
+      /* ── Stats ── */
+      #stats {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-top: 16px;
+        border-top: 1px solid #f0f2f5;
+      }
+
+      #stats p {
+        font-size: 13px;
+        color: #555;
+      }
+
+      #stats p span {
+        font-weight: 700;
+        color: #1a1a2e;
+      }
+
+      #topPlayer span {
+        color: #f59e0b !important;
+      }
+
+      /* ── Empty state ── */
+      #emptyState {
+        text-align: center;
+        padding: 32px 0;
+        color: #bbb;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="header">
+        <h1>🏆 Leaderboard</h1>
+        <p>Add players and track scores</p>
+      </div>
+
+      <div id="inputarea">
+        <div class="field">
+          <label>Name</label>
+          <input id="namInput" type="text" placeholder="e.g. Priya" />
+        </div>
+        <div class="field">
+          <label>Score</label>
+          <input id="scoreInput" type="text" placeholder="e.g. 85" />
+        </div>
+        <button onclick="addBtn()">Add Player</button>
+      </div>
+
+      <div id="outputarea">
+        <div id="emptyState">No players yet. Add one above!</div>
+        <ol id="list"></ol>
+        <div id="stats" style="display:none">
+          <p id="topPlayer">Top Player: <span></span></p>
+          <p id="displayAvg">Average Score: <span></span></p>
+          <p id="noPlayers">Total Players: <span></span></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let namInput = document.getElementById("namInput");
+      let scoreInput = document.getElementById("scoreInput");
+      let list = document.getElementById("list");
+      let displayAvg = document.getElementById("displayAvg");
+      let topPlayer = document.getElementById("topPlayer");
+      let noPlayers = document.getElementById("noPlayers");
+      let stats = document.getElementById("stats");
+      let emptyState = document.getElementById("emptyState");
+
+      let players = [];
+
+      function addBtn() {
+        let nameVal = namInput.value.trim();
+        let scoreVal = scoreInput.value.trim();
+
+        if (nameVal === "") {
+          alert("Enter a valid name");
+        } else if (!isNaN(nameVal)) {
+          alert("Name must be letters");
+        } else if (nameVal.length < 3) {
+          alert("Name is too short");
+        } else if (scoreVal === "" || scoreVal < 0) {
+          alert("Enter a valid score");
+        } else if (isNaN(scoreVal)) {
+          alert("Score must be a number");
+        } else {
+          // 1. push
+          players.push({ name: nameVal, score: Number(scoreVal) });
+
+          // 2. clear inputs
+          namInput.value = "";
+          scoreInput.value = "";
+
+          // 3. sort highest first
+          players.sort((a, b) => b.score - a.score);
+
+          // 4. clear list
+          list.innerHTML = "";
+          emptyState.style.display = "none";
+          stats.style.display = "flex";
+
+          // 5. forEach — render only
+          players.forEach((el, index) => {
+            let li = document.createElement("li");
+            li.innerHTML = `
+              <span class="rank">${index === 0 ? "🥇" : index + 1}</span>
+              <span class="player-name">${el.name}</span>
+              <span class="player-score">${el.score}</span>
+            `;
+            list.append(li);
+          });
+
+          // 6. reduce — runs once after forEach
+          let total = players.reduce((acc, curr) => {
+            return acc + curr.score;
+          }, 0);
+
+          // 7. stats — set once
+          let average = (total / players.length).toFixed(1);
+          displayAvg.innerHTML = `Average Score: <span>${average}</span>`;
+          topPlayer.innerHTML = `Top Player: <span>${players[0].name}</span>`;
+          noPlayers.innerHTML = `Total Players: <span>${players.length}</span>`;
+        }
+      }
+    </script>
+  </body>
+</html>
