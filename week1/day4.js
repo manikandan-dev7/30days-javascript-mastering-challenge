@@ -3,8 +3,6 @@
 //     return callback(result);
 // }
 
-const { GrEbay } = require("react-icons/gr");
-
 // function output(value){
 //     return value
 // }

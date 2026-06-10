@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Countdown Timer</title>
+  </head>
+  <body>
+    <input id="secondsInput" type="number" placeholder="Enter seconds" />
+    <button onclick="startTimer()">Start</button>
+    <button onclick="stopTimer()">Stop</button>
+    <button onclick="resetTimer()">Reset</button>
+    <h1 id="display">--</h1>
+
+    <script>
+      // grab elements
+      let secondsInput = document.getElementById("secondsInput");
+      let display = document.getElementById("display");
+
+      // two variables
+      let timer = null;
+      let seconds = 0;
+
+      // START
+      function startTimer() {
+        seconds = Number(secondsInput.value);
+
+        // validate
+        if (!seconds || seconds <= 0 || isNaN(seconds)) {
+          alert("Enter a valid number");
+          return;
+        }
+
+        // show immediately
+        display.textContent = seconds;
+
+        // start interval
+        timer = setInterval(() => {
+          seconds--;
+          display.textContent = seconds;
+
+          // stop when reaches 0
+          if (seconds === 0) {
+            display.textContent = "Time's Up!";
+            clearInterval(timer);
+          }
+        }, 1000);
+      }
+
+      // STOP
+      function stopTimer() {
+        clearInterval(timer);
+      }
+
+      // RESET
+      function resetTimer() {
+        clearInterval(timer);
+        display.textContent = "--";
+        secondsInput.value = "";
+      }
+    </script>
+  </body>
+</html>
