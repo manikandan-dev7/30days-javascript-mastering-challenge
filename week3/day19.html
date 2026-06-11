@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GitHub User Finder</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+        background: #0d1117;
+        color: white;
+      }
+      h1 {
+        color: #58a6ff;
+      }
+      input {
+        padding: 10px;
+        width: 300px;
+        border-radius: 6px;
+        border: none;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px 20px;
+        margin-left: 10px;
+        background: #238636;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      #result {
+        margin-top: 30px;
+        background: #161b22;
+        padding: 20px;
+        border-radius: 10px;
+        width: 340px;
+        text-align: center;
+      }
+      img {
+        width: 100px;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GitHub User Finder</h1>
+    <div>
+      <input type="text" id="username" placeholder="Enter GitHub username" />
+      <button id="searchBtn">Search</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+      // STEP 1: grab the input field by its id and store in a variable
+      // STEP 2: grab the search button by its id and store in a variable
+      // STEP 3: grab the result div by its id and store in a variable
+      let username = document.getElementById("username");
+      let searchBtn = document.getElementById("searchBtn");
+      let result = document.getElementById("result");
+
+      // STEP 4: add a click event listener to the search button
+      searchBtn.addEventListener("click", () => {
+        // inside the click, call a function named searchUser
+        searchUser();
+      });
+      // STEP 5: create an async function named searchUser
+      // inside it, read the value from the input field and store in a variable called username
+      async function searchUser() {
+        let val = username.value.trim();
+        // STEP 6: build the API url using template literal
+        // base url is https://api.github.com/users/
+        // combine it with the username variable
+        let apiurl = `https://api.github.com/users/${val}`;
+        // STEP 7: open a try block
+        // inside try: await fetch the url, store in res
+        // then await res.json(), store in data
+        try {
+          let res = await fetch(apiurl);
+          let data = await res.json();
+          if (!res.ok) {
+            throw new Error("User not found");
+          }
+          // STEP 8: inside try after getting data
+          // set result div innerHTML to show:
+          // an img tag with src = data.avatar_url
+          // a p tag with data.name
+          // a p tag with data.bio
+          // a p tag showing "Followers:" and data.followers
+          // a p tag showing "Public Repos:" and data.public_repos
+          result.innerHTML = "";
+          let img = document.createElement("img");
+          let pname = document.createElement("p");
+          let pbio = document.createElement("p");
+          let pfollowers = document.createElement("p");
+          img.src = data.avatar_url;
+          pname.textContent = data.name;
+          pbio.textContent = data.bio;
+          pfollowers.textContent = `Followers : ${data.followers}`;
+          result.append(img, pname, pbio, pfollowers);
+          console.log(data);
+          console.log(img);
+        } catch {
+          // STEP 9: open catch block with error parameter
+          // inside catch: set result div innerHTML to "User not found. Try again." in red color
+          result.innerHTML = "";
+          let status = document.createElement("p");
+          status.textContent = "User not Found";
+          result.append(status);
+        }
+      }
+    </script>
+  </body>
+</html>
