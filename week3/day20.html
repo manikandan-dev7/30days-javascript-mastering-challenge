@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GitHub Profile Comparator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+        background: #0d1117;
+        color: white;
+      }
+      h1 {
+        color: #58a6ff;
+      }
+      .inputs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      input {
+        padding: 10px;
+        width: 220px;
+        border-radius: 6px;
+        border: none;
+        font-size: 15px;
+      }
+      button {
+        padding: 10px 20px;
+        background: #238636;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 15px;
+      }
+      #result {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+      .card {
+        background: #161b22;
+        padding: 20px;
+        border-radius: 10px;
+        width: 220px;
+        text-align: center;
+      }
+      .card img {
+        width: 90px;
+        border-radius: 50%;
+      }
+      .error {
+        color: red;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GitHub Profile Comparator</h1>
+    <div class="inputs">
+      <input type="text" id="user1" placeholder="First username" />
+      <input type="text" id="user2" placeholder="Second username" />
+      <button id="compareBtn">Compare</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+      // STEP 1: grab user1 input, user2 input, compareBtn, result div
+      let user1 = document.getElementById("user1");
+      let user2 = document.getElementById("user2");
+      let compareBtn = document.getElementById("compareBtn");
+      let result = document.getElementById("result");
+      // STEP 2: add click event listener to compareBtn
+      // inside click, call compareUsers()
+      compareBtn.addEventListener("click", () => {
+        compareUsers();
+      });
+
+      // STEP 3: create async function compareUsers
+      // read value from user1 input, store in val1
+      // read value from user2 input, store in val2
+      async function compareUsers() {
+        let val1 = user1.value.trim();
+        let val2 = user2.value.trim();
+        let apiurl1 = `https://api.github.com/users/${val1}`;
+        let apiurl2 = `https://api.github.com/users/${val2}`;
+        // STEP 4: if val1 or val2 is empty
+        // set result innerHTML to a red p tag saying "Please enter both usernames"
+        // return early (stop the function)
+        if (val1 == "" || val2 == "") {
+          let p = document.createElement("p");
+          p.textContent = "Please enter both usernames";
+          p.style.color = "red";
+          result.append(p);
+          return;
+        }
+        function createCard(data) {
+          let card = document.createElement("div");
+          card.className = "card";
+          let img = document.createElement("img");
+          let pname = document.createElement("p");
+          let pbio = document.createElement("p");
+          let pfollowers = document.createElement("p");
+          img.src = data.avatar_url;
+          pname.textContent = data.name;
+          pbio.textContent = data.bio;
+          pfollowers.textContent = `Followers : ${data.followers}`;
+          card.append(img, pname, pbio, pfollowers);
+          return card;
+        }
+        try {
+          const [name1, name2] = await Promise.all([
+            fetch(apiurl1).then((res) => res.json()),
+            fetch(apiurl2).then((res) => res.json()),
+          ]);
+          if (name1.message === "Not Found" || name2.message === "Not Found") {
+            throw new Error("One or both users not found");
+          }
+          result.innerHTML = "";
+          card1 = createCard(name1);
+          card2 = createCard(name2);
+          result.append(card1, card2);
+        } catch (error) {
+          // STEP 6: convert both to json
+          // store in data1 and data2
+
+          // STEP 7: check res1.ok and res2.ok
+          // if either is false, throw new Error("One or both users not found")
+
+          // STEP 8: set result innerHTML to empty string ""
+          // create two divs with class "card"
+          // card1 innerHTML:
+          //   img with src = data1.avatar_url
+          //   p with data1.name
+          //   p with "Followers: " + data1.followers
+          //   p with "Repos: " + data1.public_repos
+          // card2 innerHTML: same but for data2
+          // append both cards to result div
+
+          // STEP 9: catch block with error parameter
+          // set result innerHTML to red p tag with error.message
+          result.innerHTML = "";
+          let p = document.createElement("p");
+          p.textContent = `error: ${error}`;
+          p.style.color = "red";
+          result.append(p);
+          return;
+        }
+      }
+
+      // STEP 5: open try block
+      // use Promise.all to fetch both users at the same time
+      // url pattern: https://api.github.com/users/USERNAME
+      // destructure results into res1 and res2
+    </script>
+  </body>
+</html>
